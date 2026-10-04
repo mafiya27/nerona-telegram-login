@@ -1,0 +1,37 @@
+# NERONA proxy pool health checker — free tier (GitHub Actions).
+# Runs hourly: tests every proxy in the pool, reports results to the license
+# server, and pings the server so Vercel + Supabase free tiers stay awake.
+#
+# REQUIRED REPO SECRETS (Settings → Secrets and variables → Actions):
+#   LICENSE_API_BASE      e.g. https://nerona-telegram-login.vercel.app
+#   LICENSE_ADMIN_SECRET  the ADMIN_SECRET from your Vercel env vars
+#
+# NOTE: this file must be added via the GitHub web UI
+# (GitHub blocks apps from creating workflow files via the API).
+# Path in repo: .github/workflows/proxy-health.yml
+name: Proxy pool health check
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # hourly — ~720 min/month, inside the 2000 free minutes
+  workflow_dispatch:      # manual "Run workflow" button
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test proxies + report
+        env:
+          LICENSE_API_BASE: ${{ secrets.LICENSE_API_BASE }}
+          LICENSE_ADMIN_SECRET: ${{ secrets.LICENSE_ADMIN_SECRET }}
+          PROXY_TIMEOUT: "20"
+          MAX_WORKERS: "20"
+        run: python3 scripts/proxy-health-check.py
+        

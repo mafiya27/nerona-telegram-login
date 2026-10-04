@@ -1,0 +1,13 @@
+{
+  "description": "Telegram login backend for NERONA FE!N extension",
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "api/verify.js",
+  "name": "nerona-telegram-login",
+  "private": true,
+  "version": "2.0.0",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}

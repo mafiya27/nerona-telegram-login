@@ -118,7 +118,7 @@ function parseProxyLine(line) {
 
 async function aProxies(client, method, query, body) {
   if (method === "GET") {
-    let q = client.from("proxies").select("host, port, protocol, country, status, latency_ms, last_checked, created_at");
+    let q = client.from("proxies").select("host, port, protocol, username, password_enc, country, status, latency_ms, last_checked, created_at");
     if (query.status) q = q.eq("status", String(query.status));
     if (query.country) q = q.eq("country", String(query.country).toUpperCase().slice(0, 8));
     q = q.order("latency_ms", { ascending: true, nullsFirst: false })

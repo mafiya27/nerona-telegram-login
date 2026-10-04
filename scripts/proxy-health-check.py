@@ -50,7 +50,13 @@ def test_proxy(entry):
     host = entry["host"]
     port = entry["port"]
     protocol = (entry.get("protocol") or "http").lower()
-    proxy_url = f"{protocol}://{host}:{port}"
+    # include auth credentials — without them the proxy rejects the connection
+    auth = ""
+    if entry.get("username"):
+        user = urllib.parse.quote(str(entry["username"]), safe="")
+        pwd = urllib.parse.quote(str(entry.get("password_enc") or ""), safe="")
+        auth = f"{user}:{pwd}@"
+    proxy_url = f"{protocol}://{auth}{host}:{port}"
     # https://ip-api.com/json/?fields=... returns caller IP + country in one hit
     target = "https://ip-api.com/json/?fields=status,country,countryCode,query"
     t0 = time.time()

@@ -1,1 +1,1 @@
-{}
+{"rewrites":[{"destination":"/api/admin?action=license","source":"/api/admin/license"},{"destination":"/api/admin?action=licenses","source":"/api/admin/licenses"},{"destination":"/api/admin?action=revoke","source":"/api/admin/revoke"},{"destination":"/api/admin?action=reset-hwid","source":"/api/admin/reset-hwid"},{"destination":"/api/admin?action=proxies","source":"/api/admin/proxies"},{"destination":"/api/admin?action=proxy-health","source":"/api/admin/proxy-health"}]}
